@@ -1,50 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Mascotas</title>
-</head>
-<body>
+﻿@extends('layouts.app')
 
-    <h1>Directorio de Mascotas</h1>
+@section('title', 'Listado de Mascotas')
 
-    @if(session('success'))
-        <div style="color: green;">
-            {{ session('success') }}
+@section('content')
+    <section class="card">
+        <div class="section-head">
+            <div>
+                <p class="section-kicker">Directorio</p>
+                <h2 class="section-title">
+                    <i class="fa-solid fa-paw"></i>
+                    Directorio de Mascotas
+                </h2>
+            </div>
+
+            <a href="{{ route('pets.create') }}" class="btn btn-success">
+                <i class="fa-solid fa-plus"></i>
+                Registrar Nueva Mascota
+            </a>
         </div>
-    @endif
 
-    <a href="{{ route('pets.create') }}">
-        Registrar Nueva Mascota
-    </a>
+        @if(session('success'))
+            <div class="alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <br><br>
+        <div class="table-wrap">
+            <table class="table-modern">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($pets as $pet)
+                        <tr>
+                            <td>{{ $pet->id }}</td>
+                            <td class="table-strong">{{ $pet->name }}</td>
+                            <td>{{ $pet->species }}</td>
+                            <td>{{ $pet->age }} años</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="table-empty">
+                                No hay mascotas registradas todavía.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Especie</th>
-                <th>Edad</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach($pets as $pet)
-                <tr>
-                    <td>{{ $pet->id }}</td>
-                    <td>{{ $pet->name }}</td>
-                    <td>{{ $pet->species }}</td>
-                    <td>{{ $pet->age }} años</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <div style="margin-top: 20px;">
-        {{ $pets->links() }}
-    </div>
-
-</body>
-</html>
+        <div class="pagination-wrap">
+            {{ $pets->links() }}
+        </div>
+    </section>
+@endsection

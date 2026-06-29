@@ -1,48 +1,56 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Nueva Mascota</title>
-</head>
-<body>
+﻿@extends('layouts.app')
 
-    <h1>Registrar Nueva Mascota</h1>
+@section('title', 'Nueva Mascota')
 
-    <form action="{{ route('pets.store') }}" method="POST">
-        @csrf
-
-        <div>
-            <label>Nombre:</label>
-            <input type="text" name="name" required>
+@section('content')
+    <section class="card form-card">
+        <div class="section-head section-head--stacked">
+            <div>
+                <p class="section-kicker">Formulario</p>
+                <h2 class="section-title">
+                    <i class="fa-solid fa-plus"></i>
+                    Registrar Nueva Mascota
+                </h2>
+            </div>
         </div>
 
-        <br>
+        <form action="{{ route('pets.store') }}" method="POST" class="form-stack">
+            @csrf
 
-        <div>
-            <label>Especie:</label>
-            <input type="text" name="species" required>
-        </div>
+            <div class="form-field">
+                <label for="name">Nombre</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required>
+                @error('name')
+                    <small class="form-error">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <br>
+            <div class="form-field">
+                <label for="species">Especie</label>
+                <input id="species" type="text" name="species" value="{{ old('species') }}" required>
+                @error('species')
+                    <small class="form-error">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <div>
-            <label>Edad:</label>
-            <input type="number" name="age" required>
-        </div>
+            <div class="form-field">
+                <label for="age">Edad</label>
+                <input id="age" type="number" name="age" min="0" value="{{ old('age') }}" required>
+                @error('age')
+                    <small class="form-error">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <br>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar Mascota
+                </button>
 
-        <button type="submit">
-            Guardar Mascota
-        </button>
-
-    </form>
-
-    <br>
-
-    <a href="{{ route('pets.index') }}">
-        Volver a la lista
-    </a>
-
-</body>
-</html>
+                <a href="{{ route('pets.index') }}" class="btn btn-secondary">
+                    Volver a la lista
+                </a>
+            </div>
+        </form>
+    </section>
+@endsection

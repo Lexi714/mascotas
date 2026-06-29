@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class PetController extends Controller
 {
-    // Método para obtener datos y paginarlos
+    // Metodo para obtener datos y paginarlos
     public function index()
     {
         $pets = Pet::latest()->paginate(5);
@@ -15,22 +15,22 @@ class PetController extends Controller
         return view('pets.index', compact('pets'));
     }
 
-    // Método para mostrar el formulario de creación
+    // Metodo para mostrar el formulario de creacion
     public function create()
     {
         return view('pets.create');
     }
 
-    // Método para guardar los datos
+    // Metodo para guardar los datos
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:255',
             'age' => 'required|integer|min:0',
         ]);
 
-        Pet::create($request->all());
+        Pet::create($validated);
 
         return redirect()
             ->route('pets.index')
